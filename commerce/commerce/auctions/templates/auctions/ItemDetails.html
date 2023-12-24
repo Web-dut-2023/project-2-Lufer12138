@@ -1,0 +1,90 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+{% include 'auctions//messages.html' %}
+<h2 class="page_headline">{{item.title}}</h2>
+<br>
+
+{%if not item.status and winner and user != item.user %} 
+<div class="alert alert-success" role="alert">
+    Congratulations, You Won!
+</div>
+{%endif%}
+<div class="Details_card">
+    <img src="{{item.image.url}}" alt="Card image cap">
+    <div>
+        <h5 class="title">{{item.title}}</h5>
+        <p class="text"><strong> Discraption: </strong>{{item.overview}}</p>
+        <p class="price"><strong> Current Price:</strong> {{item.price}}<strong>$<strong></p>
+        {%if item.status%}
+        <form action="{%url "AddBid" item.id %}" method="POST">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <input type="number" min="0" class="form-control" placeholder="Enter Your Bid" name="input_bid" requierd>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" value="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+        <p class="user"><strong>create by:</strong>{{item.user}}<strong><strong></p>
+        <div class="add btn-WatchList">
+            <form action="{% url 'add_WatchList' item.id %}" method="GET">
+                <button value="submit" class="btn btn-success">Add to Watchlist</button>
+            </form>
+            <hr>
+            <a class="btn btn-secondary" href="{%url 'index' %}">Bcak</a>
+            {%elif not item.status and user.is_authenticated %}
+            <div class="alert alert-danger" role="alert">
+                BId IS CLOSED
+              </div>
+            {% elif not user.is_authenticated and not item.status %}
+            <div class="alert alert-danger" role="alert">
+                BId IS CLOSED
+              </div>
+            <form action="{% url 'register' %}" method="GET">
+                <p>Register Now to interact with service </p>
+                <button value="submit" class="btn btn-success">Register</button>
+            </form>
+            {%endif%}
+            <hr>
+        </div>
+        {%if user.username == user.username and item.status %}
+            <form action="{%url 'status' item.id %}" method="POST">
+                {% csrf_token %}
+                <button value="submit" class="btn btn-danger btn-lg">Close</button>
+            </form>
+        {%endif%}
+    </div>
+</div>
+<hr>
+<div class="Comment">
+    {%if user.is_authenticated%}
+    <div class="comment_title">
+        <h2>leave a comment</h2>
+    </div>
+    <br>
+    <div class="text_area">
+        <form action="." method="POST">
+            {% csrf_token %}
+            <div class="form-outline mb-4">
+                <textarea name="content" class="form-control" placeholder="Write Your comment" id="textAreaExample6"
+                    rows="3"></textarea>
+            </div>
+            <button value="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+<br>
+{%endif%}
+<hr>
+<p class="com_count">Comments..({{item.post_Comments.all|length}})</p>
+{%for comment in item.post_Comments.all %}
+<div class="C-75">
+    <div class="card-body">
+        <h5 class="card-title">{{comment.name}}</h5>
+        <p class="card-text">{{comment.content}}</p>
+        <h6 class="card-title"> comment on: {{comment.date}}</h6>
+    </div>
+</div>
+<hr>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<h2 class="page_headline">{{cat_name.CategoryType}}</h2>
+<br>
+<div class="Active_cards">
+    {% for item in product %}
+    <form action="{%url 'ItemDetails' item.id item.title %}"  method="GET">
+        <div class="cards">
+            {% if item.image %}
+            <img src="{{item.image.url}}" class="card-img-top" alt="Card image cap">
+            {%endif%}
+            <div class="body">
+                <h5 class="title">{{item.title}}</h5>
+                <p class="text">{{item.overview}}</p>
+                <button value="submit" class="btn btn-info">view</button>
+            </div>
+        </div>
+    </form>
+    {%endfor%}
+</div>
+{% endblock %}

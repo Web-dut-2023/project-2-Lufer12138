@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+{% include 'auctions//messages.html' %}
+<h2 class="page_headline">Active Listings</h2>
+<br>
+<div class="Active_cards">
+{% for item in create_list %}
+{%if item.status%}
+    <div class="cards">
+            <img src="{{item.image.url}}" class="card-img" alt="image cap">
+            <div class="body">
+            <h5 class="title">{{item.title}}</h5>
+            <p class="text">{{item.overview}}</p>
+            <h3 class="text">price {{item.price}} $</h3>
+            <span><strong>creation time : </strong>{{item.create_date}} &#x231A;</span>
+            <form action="{%url 'ItemDetails' item.id item.title  %}"  method="GET">
+                <button value="submit" class="btn btn-success">Open item</button>
+            </form>
+        </div>
+    </div>
+{%endif%}
+{%endfor%}
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<h2 class="page_headline">Categories</h2>
+<br>
+<div class="Display_category">
+    {% for item in data %}
+    <form action="{% url 'DisplayItems' item.CategoryType %}" method="GET">
+        <div class="category_card">
+            {% if item.image %}
+            <img src="{{item.image.url}}" alt="Card image cap">
+            {%endif%}
+            <h5 class="title">{{item.CategoryType}}</h5>
+            <p class="text">{{item.overview}}</p>
+            <button value="submit" class="btn btn-info">Open</button>
+        </div>
+    </form>
+    {%endfor%}
+</div>
+{% endblock %}

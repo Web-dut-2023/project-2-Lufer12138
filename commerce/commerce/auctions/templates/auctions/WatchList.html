@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% block body %}
+<h2 class="page_headline">Your WatchList</h2>
+<br>
+{% include 'auctions//messages.html' %}
+<div class="Active_cards">
+{% for Product in item %}
+    <div class="cards">
+            <img src="{{Product.image.url}}" class="card-img" alt="image cap">
+        <div class="body">
+            <h5 class="title">{{Product.title}}</h5>
+            <p class="text">{{Product.overview}}</p>
+            <h3 class="text">price {{Product.price}} $</h3>
+            <span><strong>creation time : </strong>{{Product.create_date}} &#x231A;</span>
+            <form action="{%url 'Remove_WatchList' Product.id %}" method="GET">
+                <button value="submit" class="btn btn-danger">Remove</button>
+            </form>
+        </div>
+    </div>
+{%endfor%}
+    {%if not item %}
+        <div class="empty_case">
+            <div class="alert alert-warning" role="alert">
+            Your Watchlist is empty add some items !
+            </div>
+            <img src="{% static 'images/empty.png' %}">
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
